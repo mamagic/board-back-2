@@ -1,5 +1,7 @@
 package com.api.board.entity;
 
+import com.api.board.controller.request.MemberRequest;
+import com.api.board.dto.CommentDTO;
 import com.api.board.dto.MemberDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
@@ -39,8 +42,12 @@ public class Member implements UserDetails {
     @Column
     private final String socialProvider;
 
-    public MemberDTO translateDTO(){
-        return new MemberDTO(id, displayPath, email, password, socialProvider);
+    public static MemberDTO translateDTO(MemberRequest request){
+        return new MemberDTO(null, null, request.getEmail(), request.getPassword(), null,null);
+    }
+
+    public static MemberDTO translateDTO(MemberRequest request, List<CommentDTO> comments){
+        return new MemberDTO(null, null, request.getEmail(), request.getPassword(), null, comments);
     }
 
     @Override

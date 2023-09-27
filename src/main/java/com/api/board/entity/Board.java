@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -27,6 +29,9 @@ public class Board {
     private final String writer;
 
     @Column
+    private final String content;
+
+    @Column
     private final LocalDate regDttm;
 
     @Column
@@ -35,8 +40,12 @@ public class Board {
     @Column
     private final int reply;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="boardId")
+    private final List<Comment> comment = new ArrayList<>();
+
     public BoardDTO translatedDTO(){
-        return new BoardDTO(docNo, title, writer, regDttm, view, reply);
+        return new BoardDTO(docNo, title, writer, content, regDttm, view, reply);
     }
 
 }

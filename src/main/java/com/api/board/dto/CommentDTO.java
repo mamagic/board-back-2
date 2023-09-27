@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -12,12 +11,10 @@ import java.time.LocalDate;
 
 @Data
 @RequiredArgsConstructor
-public class BoardDTO {
-    private final Long docNo;
-    private final String title;
+public class CommentDTO {
+
+    private final Long replyNo;
     private final String writer;
-    private final String content;
+    private final String contents;
     private final LocalDate regDttm;
-    private final int view;
-    private final int reply;
 }

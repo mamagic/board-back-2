@@ -3,6 +3,7 @@ package com.api.board.controller;
 import com.api.board.controller.request.BoardRequest;
 import com.api.board.controller.response.BoardResponse;
 import com.api.board.dto.BoardDTO;
+import com.api.board.dto.MemberDTO;
 import com.api.board.entity.Board;
 import com.api.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -42,4 +43,11 @@ public class BoardController {
 
         return ResponseEntity.ok(new BoardResponse(list, boardService.getCount()));
     }
+    @GetMapping("/detail")
+    public ResponseEntity<BoardDTO> detail(@RequestParam(name = "docNo") Long docNo){
+        logger.info("docNm : " + docNo);
+        BoardDTO boardDTO = boardService.getDetail(docNo);
+        return ResponseEntity.ok(boardDTO);
+    }
+
 }

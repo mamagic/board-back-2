@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Data
 @RequiredArgsConstructor
 public class MemberDTO {
@@ -18,9 +20,5 @@ public class MemberDTO {
     private final String email;
     private final String password;
     private final String socialProvider;
-
-    public static MemberDTO translateDTO(MemberRequest request){
-        return new MemberDTO(null, null, request.getEmail(), request.getPassword(), null);
-    }
-
+    private final List<CommentDTO> comments;
 }

@@ -49,4 +49,10 @@ public class BoardService {
     public int getCount(){
         return getList().size();
     }
+
+
+    @Transactional
+    public BoardDTO getDetail(Long docNo) {
+        return boardRepository.findById(docNo).get().translatedDTO();
+    }
 }

@@ -2,6 +2,7 @@ package com.api.board.controller;
 
 import com.api.board.controller.request.MemberRequest;
 import com.api.board.dto.MemberDTO;
+import com.api.board.entity.Member;
 import com.api.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ public class MemberController {
       logger.info("userId : " + request.getEmail());
       logger.info("password : " + request.getPassword());
 
-      memberService.register(MemberDTO.translateDTO(request));
+      memberService.register(Member.translateDTO(request));
       return ResponseEntity.ok("ok");
    }
 }

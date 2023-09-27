@@ -17,7 +17,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     properties:
       hibernate:
-        hbm2ddl.auto: update
+        hbm2ddl.auto: create-drop
         '[format_sql]': true
         #'[hbm2ddl.auto]': update
         '[implicit_naming_strategy]': org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
