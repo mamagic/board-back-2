@@ -25,7 +25,7 @@ public class BoardService {
         return boardRepository
                 .findAll()
                 .stream()
-                .map(Board::translatedDTO)
+                .map(BoardDTO::translate)
                 .toList();
     }
 
@@ -38,7 +38,7 @@ public class BoardService {
         return boardRepository
                 .findAll(pageRequest)
                 .stream()
-                .map(Board::translatedDTO)
+                .map(BoardDTO::translate)
                 .toList();
     }
 
@@ -53,6 +53,25 @@ public class BoardService {
 
     @Transactional
     public BoardDTO getDetail(Long docNo) {
-        return boardRepository.findById(docNo).get().translatedDTO();
+        Board board = boardRepository.findById(docNo).get();
+        board.setView(board.getView() + 1);
+        return BoardDTO.translate(board);
+    }
+
+    @Transactional
+    public void insert(BoardDTO boardDTO) {
+        boardRepository.save(Board.translate(boardDTO));
+    }
+
+    @Transactional
+    public void delete(String docNo) {
+        boardRepository.deleteById(Long.parseLong(docNo.substring(6)));
+    }
+
+    @Transactional
+    public void update(BoardDTO boardDTO) {
+        Board board = boardRepository.findById(boardDTO.getDocNo()).get();
+        board.setTitle(boardDTO.getTitle());
+        board.setContent(boardDTO.getContent());
     }
 }

@@ -1,9 +1,10 @@
 package com.api.board.controller;
 
-import com.api.board.controller.request.BoardRequest;
-import com.api.board.controller.response.BoardResponse;
+import com.api.board.controller.request.BoardInsertRequest;
+import com.api.board.controller.request.BoardUpdateRequest;
+import com.api.board.controller.response.BoardDetailResponse;
+import com.api.board.controller.response.BoardListResponse;
 import com.api.board.dto.BoardDTO;
-import com.api.board.dto.MemberDTO;
 import com.api.board.entity.Board;
 import com.api.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +31,7 @@ public class BoardController {
         sort : 소트 방법
      */
     @GetMapping("/list")
-    public ResponseEntity<BoardResponse> list(
+    public ResponseEntity<BoardListResponse> list(
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "rows", defaultValue = "5") int rows,
             @RequestParam(name = "sort", defaultValue = "desc") String sort
@@ -41,13 +42,40 @@ public class BoardController {
 
         List<BoardDTO> list = boardService.getList(page, rows, sort);
 
-        return ResponseEntity.ok(new BoardResponse(list, boardService.getCount()));
+        return ResponseEntity.ok(new BoardListResponse(list, boardService.getCount()));
     }
     @GetMapping("/detail")
-    public ResponseEntity<BoardDTO> detail(@RequestParam(name = "docNo") Long docNo){
-        logger.info("docNm : " + docNo);
+    public ResponseEntity<BoardDetailResponse> detail(@RequestParam(name = "docNo") Long docNo){
+        logger.info("docNo : " + docNo);
+
         BoardDTO boardDTO = boardService.getDetail(docNo);
-        return ResponseEntity.ok(boardDTO);
+
+        return ResponseEntity.ok(new BoardDetailResponse(boardDTO));
     }
 
+    @PostMapping(value = "/insert", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<String> insert(@RequestBody BoardInsertRequest request){
+        logger.info("title : " + request.getTitle());
+        logger.info("writer: " + request.getWriter());
+        logger.info("content: " + request.getContent());
+
+        boardService.insert(BoardDTO.translate(request));
+        return ResponseEntity.ok("ok");
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<String> update(@RequestBody BoardUpdateRequest request){
+        logger.info("title : " + request.getDocNo());
+        logger.info("title : " + request.getTitle());
+        logger.info("content: " + request.getContent());
+
+        boardService.update(BoardDTO.translate(request));
+        return ResponseEntity.ok("ok");
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<String> delete(@RequestBody String docNo){
+        boardService.delete(docNo);
+        return ResponseEntity.ok("ok");
+    }
 }

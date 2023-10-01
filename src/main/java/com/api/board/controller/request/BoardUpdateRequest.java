@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class BoardRequest {
-    private int page;
-    private int rows;
-    private String sort;
+public class BoardUpdateRequest {
+    private Long DocNo;
+    private String title;
+    private String content;
 }

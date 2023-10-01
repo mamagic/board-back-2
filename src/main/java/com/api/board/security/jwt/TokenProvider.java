@@ -1,5 +1,6 @@
 package com.api.board.security.jwt;
 
+import com.api.board.entity.Member;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -14,11 +15,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
+
+import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 
 @Component
 public class TokenProvider implements InitializingBean {
@@ -50,11 +54,13 @@ public class TokenProvider implements InitializingBean {
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds);
 
-        logger.info("JWT Token 을 만들었습니다");
+        logger.info("JWT Token Make");
+
+        String email = ((Member)authentication.getPrincipal()).getEmail();
         return Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(email)
                 .claim(AUTHORITIES_KEY, authorities)
-                .signWith(key, SignatureAlgorithm.HS512)
+                .signWith(key, HS512)
                 .setExpiration(validity)
                 .compact();
     }

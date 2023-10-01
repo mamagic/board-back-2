@@ -1,13 +1,15 @@
 package com.api.board.entity;
 
+import com.api.board.controller.request.BoardInsertRequest;
+import com.api.board.controller.request.BoardUpdateRequest;
 import com.api.board.dto.BoardDTO;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "board")
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class Board {
 
     @Id
@@ -23,29 +25,37 @@ public class Board {
     private final Long docNo;
 
     @Column
-    private final String title;
+    private String title;
 
     @Column
     private final String writer;
 
     @Column
-    private final String content;
+    private String content;
 
     @Column
-    private final LocalDate regDttm;
+    private String regDttm;
 
     @Column
-    private final int view;
+    private int view;
 
     @Column
     private final int reply;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name="boardId")
+    @BatchSize(size = 5)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "board")
     private final List<Comment> comment = new ArrayList<>();
 
-    public BoardDTO translatedDTO(){
-        return new BoardDTO(docNo, title, writer, content, regDttm, view, reply);
+    public Board translate(){
+        return new Board(docNo, title, writer, content, regDttm, view, comment.size());
     }
+
+    public static Board translate(BoardDTO boardDTO){
+        return new Board(null, boardDTO.getTitle(), boardDTO.getWriter(), boardDTO.getContent(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), 0, 0);
+    }
+//
+//    public static BoardDTO translatedDTO(BoardUpdateRequest request){
+//        return new BoardDTO(request.getDocNo(), request.getTitle(), null, request.getContent(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), 0, 0);
+//    }
 
 }
