@@ -25,7 +25,7 @@ public class MemberController {
       logger.info("userId : " + request.getEmail());
       logger.info("password : " + request.getPassword());
 
-      memberService.register(Member.translateDTO(request));
+      memberService.register(MemberDTO.translate(request));
       return ResponseEntity.ok("ok");
    }
 }

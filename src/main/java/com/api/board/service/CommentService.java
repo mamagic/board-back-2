@@ -25,39 +25,45 @@ public class CommentService {
         return boardRepository.findById(docNo).orElseThrow(() -> new Exception("존재하지 않는 게시판입니다."))
                 .getComment()
                 .stream()
-                .map(Comment::translatedDTO)
+                .map(CommentDTO::translate)
                 .toList();
         // get()으로 하면 boardRepository.findById(docNo)가 null이라면 exception이 발생한다.
-//        return boardRepository.findById(docNo).get().getComment()
-//                .stream()
-//                .map(Comment::translatedDTO)
-//                .toList();
+        //        return boardRepository.findById(docNo).get().getComment()
+        //                .stream()
+        //                .map(Comment::translatedDTO)
+        //                .toList();
 
         // ifPresent()으로 하면 boardRepository.findById(docNo)가 null이여도 exception이 발생 안한다.
         // ifPresent(e -> {}) ifPresent는 데이터가 null이 아닐때만 실행이 된다.
         // ifPresent(e -> {})는 반환값이 void이다.
         // isPresent()는 boardRepository.findById(docNo)의 Optional<Board> 데이터에 Board가 null인지 아닌지 유무를 판단하는 메소드이다.
         // isPresent()는 true, false인지만 반환해준다.
-//        Optional<Board> boardOptional = boardRepository.findById(docNo);
-//        if(boardOptional.isPresent()) {
-//            return boardOptional.get().getComment()
-//                    .stream()
-//                    .map(Comment::translatedDTO)
-//                    .toList();
-//        }
-//        throw new Exception("존재하지 않는 게시판입니다.");
+        //        Optional<Board> boardOptional = boardRepository.findById(docNo);
+        //        if(boardOptional.isPresent()) {
+        //            return boardOptional.get().getComment()
+        //                    .stream()
+        //                    .map(Comment::translatedDTO)
+        //                    .toList();
+        //        }
+        //        throw new Exception("존재하지 않는 게시판입니다.");
     }
 
     @Transactional
-    public void insert(CommentDTO commentDTO) {
-        Board board = boardRepository.findById(commentDTO.getBoardId()).get();
-        board.getComment().add(commentDTO.translateEntity());
+    public void insert(CommentDTO commentDTO) throws Exception {
+        Board board = boardRepository.findById(commentDTO.getBoardId()).orElseThrow(() -> new Exception("존재하지 않는 게시판입니다."));
+        Comment comment = Comment.translate(commentDTO);
+        comment.setBoard(board);
+        board.getComment().add(comment);
     }
 
     @Transactional
-    public void delete(CommentDeleteRequest request) {
-        Board board = boardRepository.findById(request.getDocNo()).get();
-        board.getComment().removeIf(comment -> comment.getReplyNo().equals(request.getReplyNo()));
+    public void delete(CommentDeleteRequest request) throws Exception {
+        Board board = boardRepository.findById(request.getDocNo()).orElseThrow(() -> new Exception("존재하지 않는 게시판입니다."));
+        List<Comment> comments = board.getComment();
+        comments.removeIf(comment -> comment.getReplyNo().equals(request.getReplyNo()));
+        board.setComment(comments);
+
+        //board.getComment().removeIf(comment -> comment.getReplyNo().equals(request.getReplyNo()));
     }
 
     @Transactional

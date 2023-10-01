@@ -45,7 +45,7 @@ public class BoardController {
         return ResponseEntity.ok(new BoardListResponse(list, boardService.getCount()));
     }
     @GetMapping("/detail")
-    public ResponseEntity<BoardDetailResponse> detail(@RequestParam(name = "docNo") Long docNo){
+    public ResponseEntity<BoardDetailResponse> detail(@RequestParam(name = "docNo") Long docNo) throws Exception {
         logger.info("docNo : " + docNo);
 
         BoardDTO boardDTO = boardService.getDetail(docNo);
@@ -64,7 +64,7 @@ public class BoardController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<String> update(@RequestBody BoardUpdateRequest request){
+    public ResponseEntity<String> update(@RequestBody BoardUpdateRequest request) throws Exception {
         logger.info("title : " + request.getDocNo());
         logger.info("title : " + request.getTitle());
         logger.info("content: " + request.getContent());

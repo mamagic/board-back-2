@@ -37,8 +37,4 @@ public class BoardDTO {
     public static BoardDTO translate(BoardUpdateRequest request){
         return new BoardDTO(request.getDocNo(), request.getTitle(), null, request.getContent(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), 0, 0);
     }
-
-//    public Board translateEntity(){ return new Board(docNo, title, writer, content, regDttm, view, reply);
-//    }
-
 }

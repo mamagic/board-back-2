@@ -36,13 +36,7 @@ public class Comment {
     @JoinColumn(name="boardId")
     private Board board;
 
-    public CommentDTO translatedDTO(){
-        return new CommentDTO(replyNo, writer, contents, regDttm, boardId);
+    public static Comment translate(CommentDTO commentDTO) {
+        return new Comment(null,commentDTO.getWriter(), commentDTO.getContents(), commentDTO.getRegDttm(), commentDTO.getBoardId(), null);
     }
-
-    public static CommentDTO translateDTO(CommentRequest request){
-        return new CommentDTO(null, request.getWriter(), request.getComment(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), request.getDocNo());
-    }
-
-
 }

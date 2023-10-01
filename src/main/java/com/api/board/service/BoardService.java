@@ -52,8 +52,8 @@ public class BoardService {
 
 
     @Transactional
-    public BoardDTO getDetail(Long docNo) {
-        Board board = boardRepository.findById(docNo).get();
+    public BoardDTO getDetail(Long docNo) throws Exception {
+        Board board = boardRepository.findById(docNo).orElseThrow(() -> new Exception("존재하지 않는 게시판입니다."));
         board.setView(board.getView() + 1);
         return BoardDTO.translate(board);
     }
@@ -69,8 +69,8 @@ public class BoardService {
     }
 
     @Transactional
-    public void update(BoardDTO boardDTO) {
-        Board board = boardRepository.findById(boardDTO.getDocNo()).get();
+    public void update(BoardDTO boardDTO) throws Exception {
+        Board board = boardRepository.findById(boardDTO.getDocNo()).orElseThrow(() -> new Exception("존재하지 않는 게시판입니다."));
         board.setTitle(boardDTO.getTitle());
         board.setContent(boardDTO.getContent());
     }

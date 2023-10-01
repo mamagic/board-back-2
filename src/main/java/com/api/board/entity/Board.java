@@ -44,18 +44,9 @@ public class Board {
 
     @BatchSize(size = 5)
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "board")
-    private final List<Comment> comment = new ArrayList<>();
-
-    public Board translate(){
-        return new Board(docNo, title, writer, content, regDttm, view, comment.size());
-    }
+    private List<Comment> comment = new ArrayList<>();
 
     public static Board translate(BoardDTO boardDTO){
         return new Board(null, boardDTO.getTitle(), boardDTO.getWriter(), boardDTO.getContent(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), 0, 0);
     }
-//
-//    public static BoardDTO translatedDTO(BoardUpdateRequest request){
-//        return new BoardDTO(request.getDocNo(), request.getTitle(), null, request.getContent(), LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), 0, 0);
-//    }
-
 }

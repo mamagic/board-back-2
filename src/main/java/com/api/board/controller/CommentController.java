@@ -4,6 +4,7 @@ import com.api.board.controller.request.CommentDeleteRequest;
 import com.api.board.controller.request.CommentRequest;
 import com.api.board.controller.request.CommentUpdateRequest;
 import com.api.board.controller.response.CommentResponse;
+import com.api.board.dto.CommentDTO;
 import com.api.board.entity.Comment;
 import com.api.board.service.BoardService;
 import com.api.board.service.CommentService;
@@ -32,17 +33,17 @@ public class CommentController {
     }
 
     @PostMapping("/insert")
-    public ResponseEntity<String> insert(@RequestBody CommentRequest request){
+    public ResponseEntity<String> insert(@RequestBody CommentRequest request) throws Exception {
         logger.info("comment docNm : " + request.getDocNo());
         logger.info("comment writer : " + request.getWriter());
         logger.info("comment comment : " + request.getComment());
 
-        commentService.insert(Comment.translateDTO(request));
+        commentService.insert(CommentDTO.translate(request));
 
         return ResponseEntity.ok("ok");
     }
     @PostMapping("/delete")
-    public ResponseEntity<String> delete(@RequestBody CommentDeleteRequest request){
+    public ResponseEntity<String> delete(@RequestBody CommentDeleteRequest request) throws Exception {
         commentService.delete(request);
         return ResponseEntity.ok("ok");
     }

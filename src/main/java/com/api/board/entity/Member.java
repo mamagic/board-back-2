@@ -42,14 +42,6 @@ public class Member implements UserDetails {
     @Column
     private final String socialProvider;
 
-    public static MemberDTO translateDTO(MemberRequest request){
-        return new MemberDTO(null, null, request.getEmail(), request.getPassword(), null,null);
-    }
-
-    public static MemberDTO translateDTO(MemberRequest request, List<CommentDTO> comments){
-        return new MemberDTO(null, null, request.getEmail(), request.getPassword(), null, comments);
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));

@@ -21,4 +21,8 @@ public class MemberDTO {
     private final String password;
     private final String socialProvider;
     private final List<CommentDTO> comments;
+
+    public static MemberDTO translate(MemberRequest request){
+        return new MemberDTO(null, null, request.getEmail(), request.getPassword(), null,null);
+    }
 }
