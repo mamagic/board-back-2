@@ -54,13 +54,12 @@ public class BoardController {
     }
 
     @PostMapping(value = "/insert", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<String> insert(@RequestBody BoardInsertRequest request){
+    public ResponseEntity<Long> insert(@RequestBody BoardInsertRequest request){
         logger.info("title : " + request.getTitle());
         logger.info("writer: " + request.getWriter());
         logger.info("content: " + request.getContent());
 
-        boardService.insert(BoardDTO.translate(request));
-        return ResponseEntity.ok("ok");
+        return ResponseEntity.ok(boardService.insert(BoardDTO.translate(request)));
     }
 
     @PostMapping("/update")

@@ -59,13 +59,13 @@ public class BoardService {
     }
 
     @Transactional
-    public void insert(BoardDTO boardDTO) {
-        boardRepository.save(Board.translate(boardDTO));
+    public Long insert(BoardDTO boardDTO) {
+        return boardRepository.save(Board.translate(boardDTO)).getId();
     }
 
     @Transactional
     public void delete(String docNo) {
-        boardRepository.deleteById(Long.parseLong(docNo.substring(6)));
+        boardRepository.deleteById(Long.parseLong(docNo.substring(9,docNo.length() - 1)));
     }
 
     @Transactional

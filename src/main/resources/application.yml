@@ -17,7 +17,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     properties:
       hibernate:
-        default_batch_fetch_size: 5
+        #default_batch_fetch_size: 5
         hbm2ddl.auto: update
         '[format_sql]': true
         #'[hbm2ddl.auto]': update

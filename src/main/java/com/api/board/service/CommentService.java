@@ -52,18 +52,13 @@ public class CommentService {
     public void insert(CommentDTO commentDTO) throws Exception {
         Board board = boardRepository.findById(commentDTO.getBoardId()).orElseThrow(() -> new Exception("존재하지 않는 게시판입니다."));
         Comment comment = Comment.translate(commentDTO);
-        comment.setBoard(board);
         board.getComment().add(comment);
     }
 
     @Transactional
     public void delete(CommentDeleteRequest request) throws Exception {
         Board board = boardRepository.findById(request.getDocNo()).orElseThrow(() -> new Exception("존재하지 않는 게시판입니다."));
-        List<Comment> comments = board.getComment();
-        comments.removeIf(comment -> comment.getReplyNo().equals(request.getReplyNo()));
-        board.setComment(comments);
-
-        //board.getComment().removeIf(comment -> comment.getReplyNo().equals(request.getReplyNo()));
+        board.getComment().removeIf(comment -> comment.getReplyNo().equals(request.getReplyNo()));
     }
 
     @Transactional

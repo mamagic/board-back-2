@@ -23,12 +23,8 @@ public class CommentDTO {
     private final String regDttm;
     private final Long boardId;
 
-//    public Comment translateEntity(){
-//        return new Comment(null , writer, contents, regDttm, boardId, null);
-//    }
-
     public static CommentDTO translate(Comment comment){
-        return new CommentDTO(null,comment.getWriter(), comment.getContents(), comment.getRegDttm(), comment.getBoardId());
+        return new CommentDTO(comment.getReplyNo(),comment.getWriter(), comment.getContents(), comment.getRegDttm(), comment.getBoardId());
     }
 
     public static CommentDTO translate(CommentRequest request){
