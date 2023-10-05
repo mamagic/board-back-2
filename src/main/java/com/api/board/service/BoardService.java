@@ -7,7 +7,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import java.net.URLDecoder;
 
 import java.util.List;
 
@@ -34,7 +36,13 @@ public class BoardService {
      */
     @Transactional
     public List<BoardDTO> getList(int page, int rows, String sort){
-        PageRequest pageRequest = PageRequest.of(page - 1, rows);
+        String sortString = URLDecoder.decode(sort);
+        Sort sortBy = Sort.by("");
+
+        System.out.println(sortString);
+        System.out.println(sortBy);
+
+        PageRequest pageRequest = PageRequest.of(page - 1, rows, sortBy);
         return boardRepository
                 .findAll(pageRequest)
                 .stream()

@@ -22,7 +22,7 @@ import java.util.List;
 public class Board {
 
     @Id
-    @Column(name = "docNo")
+    @Column(name = "doc_no")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
 
