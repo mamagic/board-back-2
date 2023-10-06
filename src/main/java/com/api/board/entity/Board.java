@@ -22,9 +22,8 @@ import java.util.List;
 public class Board {
 
     @Id
-    @Column(name = "doc_no")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private final Long id;
+    private final Long docNo;
 
     @Column
     private String title;

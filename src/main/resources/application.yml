@@ -18,7 +18,7 @@ spring:
     properties:
       hibernate:
         #default_batch_fetch_size: 5
-        hbm2ddl.auto: create-drop
+        hbm2ddl.auto: update
         '[format_sql]': true
         #'[hbm2ddl.auto]': update
         '[implicit_naming_strategy]': org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy

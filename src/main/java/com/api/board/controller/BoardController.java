@@ -32,15 +32,19 @@ public class BoardController {
      */
     @GetMapping("/list")
     public ResponseEntity<BoardListResponse> list(
+            @RequestParam(name = "schType", defaultValue = "") String schType,
+            @RequestParam(name = "schVal", defaultValue = "") String schVal,
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "rows", defaultValue = "5") int rows,
             @RequestParam(name = "sort", defaultValue = "desc") String sort
     ){
+        logger.info("schType : " + schType);
+        logger.info("schVal : " + schVal);
         logger.info("load page : " + page);
         logger.info("load rows : " + rows);
         logger.info("sort : " + sort);
 
-        List<BoardDTO> list = boardService.getList(page, rows, sort);
+        List<BoardDTO> list = boardService.getList(schType, schVal, page, rows, sort);
 
         return ResponseEntity.ok(new BoardListResponse(list, boardService.getCount()));
     }

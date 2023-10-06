@@ -27,7 +27,7 @@ public class BoardDTO {
 
 
     public static BoardDTO translate(Board board){
-      return new BoardDTO(board.getId(), board.getTitle(), board.getWriter(), board.getContent(), board.getRegDttm(), board.getView(), board.getComment().size());
+      return new BoardDTO(board.getDocNo(), board.getTitle(), board.getWriter(), board.getContent(), board.getRegDttm(), board.getView(), board.getComment().size());
     }
 
     public static BoardDTO translate(BoardInsertRequest request){
