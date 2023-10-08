@@ -1,13 +1,14 @@
 package com.api.board.service;
 
 import com.api.board.file.FileStorageProperties;
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -39,8 +40,14 @@ public class FileStorageService {
         return fileName;
     }
 
-    public UrlResource loadFileAsResource(String fileName) throws MalformedURLException {
+    public Resource loadFileAsResource(String fileName) throws MalformedURLException {
         Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-        return  new UrlResource(filePath.toUri());
+        Resource resource =  new UrlResource(filePath.toUri());
+        System.out.println("resource :" + resource);
+        if(resource.exists()) {
+             return resource;
+        } else {
+             return null;
+        }
     }
 }

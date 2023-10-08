@@ -2,11 +2,11 @@ package com.api.board.controller;
 
 import com.api.board.controller.response.UploadFileResponse;
 import com.api.board.service.FileStorageService;
-import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -51,9 +51,9 @@ public class FileController {
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")
-    public ResponseEntity<UrlResource> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws MalformedURLException {
+    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) throws MalformedURLException {
         // Load file as Resource
-        UrlResource resource = fileStorageService.loadFileAsResource(fileName);
+        Resource resource = fileStorageService.loadFileAsResource(fileName);
 
         // Try to determine file's content type
         String contentType = null;
