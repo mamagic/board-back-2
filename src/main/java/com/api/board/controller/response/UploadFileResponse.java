@@ -1,5 +1,8 @@
 package com.api.board.controller.response;
 
+import lombok.Data;
+
+@Data
 public class UploadFileResponse {
     private String fileName;
     private String fileDownloadUri;

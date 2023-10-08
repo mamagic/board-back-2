@@ -32,29 +32,22 @@ public class FileController {
     private FileStorageService fileStorageService;
 
     @PostMapping("/uploadFile")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<UploadFileResponse> uploadFile(@RequestParam("file") MultipartFile file) {
         String fileName = null;
+
         try {
             fileName = fileStorageService.storeFile(file);
         }catch (IOException ignored){
-
+            ignored.printStackTrace();
         }
 
         String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/downloadFile/")
+                .path("/uploads/")
                 .path(fileName)
                 .toUriString();
 
-        return new UploadFileResponse(fileName, fileDownloadUri,
-                file.getContentType(), file.getSize());
-    }
-
-    @PostMapping("/uploadMultipleFiles")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
-        return Arrays.asList(files)
-                .stream()
-                .map(this::uploadFile)
-                .collect(Collectors.toList());
+        return ResponseEntity.ok(new UploadFileResponse(fileName, fileDownloadUri,
+                file.getContentType(), file.getSize()));
     }
 
     @GetMapping("/downloadFile/{fileName:.+}")

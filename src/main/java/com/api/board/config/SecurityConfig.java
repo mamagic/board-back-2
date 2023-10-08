@@ -64,13 +64,13 @@ public class SecurityConfig {
 
 		httpSecurity
 				.authorizeHttpRequests() // HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다.
-				.requestMatchers("/login", "/member/**").permitAll() // 로그인 api
+				.requestMatchers("/login", "/member/**", "/file/**", "/uploads/**").permitAll() // 로그인 api
 				.anyRequest().authenticated()
 				.and()
 				.csrf().disable() // 외부 POST 요청을 받아야하니 csrf는 꺼준다.
 				.cors().configurationSource(corsConfigurationSource())
 				.and().httpBasic().disable()
-				.logout().logoutSuccessUrl("/")
+				.logout().logoutSuccessUrl("/home")
 				.and().headers().frameOptions().sameOrigin();
 
 		httpSecurity
@@ -123,17 +123,11 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 
-//		config.setAllowCredentials(true);
-//		config.setAllowedOrigins(List.of("http://localhost:4200"));
-//		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-//		config.setAllowedHeaders(List.of("*"));
-//		config.setExposedHeaders(List.of("*"));
-
-		config.setAllowCredentials(false);
-		config.addAllowedOrigin("*");
-		config.addAllowedHeader("*");
-		config.addAllowedMethod("*");
-		config.setMaxAge(6000L);
+		config.setAllowCredentials(true);
+		config.setAllowedOrigins(List.of("http://localhost:4200"));
+		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+		config.setAllowedHeaders(List.of("*"));
+		config.setExposedHeaders(List.of("*"));
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
