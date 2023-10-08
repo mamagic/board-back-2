@@ -29,14 +29,27 @@ public class Comment {
     @Column
     private final String regDttm;
 
-    @Column
-    private final Long boardId;
-
+//    @Column
+//    private final Long boardId;
+//
 //    @ManyToOne // 자기자신에게 column 이 있다
 //    @JoinColumn(name="boardId")
 //    private Board board;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "boardId")
+    private Board board;
+
+    @Column(name = "boardId", insertable = false, updatable = false)
+    private Long boardId;
+
+    public Comment(Long replyNo, String writer, String contents, String regDttm) {
+        this.replyNo = replyNo;
+        this.writer = writer;
+        this.contents = contents;
+        this.regDttm = regDttm;
+    }
 
     public static Comment translate(CommentDTO commentDTO) {
-        return new Comment(null,commentDTO.getWriter(), commentDTO.getContents(), commentDTO.getRegDttm(), commentDTO.getBoardId());
+        return new Comment(null, commentDTO.getWriter(), commentDTO.getContents(), commentDTO.getRegDttm());
     }
 }

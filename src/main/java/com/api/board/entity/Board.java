@@ -44,8 +44,11 @@ public class Board {
     @Column
     private int reply;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "boardId") // comment entity 에 있는 boardId 를 칭한다
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "board")
+    //orphanRemoval 양방향 삭제를 지원하겠다
+    //항상 cascade 와 같이 사용되어야 한다(단방향일때는 orphanRemoval 은 필요가 없다)
+    //위 옵션들은 oneToMany 에만 적용이 된다
+    //@JoinColumn(name = "boardId") // comment entity 에 있는 boardId 를 칭한다
     private final List<Comment> comment = new ArrayList<>();
 
     // board 에 findByid로 board에 id를 검색하면, board entity 가 뽑아져서 나오는데

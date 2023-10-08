@@ -52,7 +52,25 @@ public class CommentService {
     public void insert(CommentDTO commentDTO) throws Exception {
         Board board = boardRepository.findById(commentDTO.getBoardId()).orElseThrow(() -> new Exception("존재하지 않는 게시판입니다."));
         Comment comment = Comment.translate(commentDTO);
+        comment.setBoard(board);
+        // 단방향일때는  board에 comment 를 저장만 하면 연결이 되어서 조회가 되지만
+        // 양방향일때는  comment 에도 board 를 저장해야만 조회가된다
         board.getComment().add(comment);
+
+        // Board -> Comment를 가지고 있음
+        // 기존 Comment -> Board 엔티티가 없었음
+        // Comment -> Board
+
+        // Board 엔티티에는 Comment 엔티티가 존재. Board조회할때 Board 조회쿼리와 Comment 조회 쿼리 총 2번이 실행
+
+        // Comment를 Insert하기 위해 하는 행동
+        // 1번 Board 조회한다.
+        // 2번 commentDTO -> Comment 엔티티로 변환한다.
+        // 3번 Comment commentRepository.save(comment); X
+        // 3번 1번에서 불러온 Board 엔티티에 Comment add하고 더티체크로 저장
+
+        // Comment 엔티티 조회 후 Board 엔티티 조회
+        // select * from Comment where commentId=1
     }
 
     @Transactional
@@ -63,6 +81,7 @@ public class CommentService {
 
     @Transactional
     public void update(CommentUpdateRequest request) {
+        // commentRepository 를 추가하여 수정할것
         Board board = boardRepository.findById(request.getDocNo()).get();
         board.getComment().stream()
                           .filter(reply -> reply.getReplyNo().equals(request.getReplyNo()))

@@ -123,11 +123,17 @@ public class SecurityConfig {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
 
-		config.setAllowCredentials(true);
-		config.setAllowedOrigins(List.of("http://localhost:4200"));
-		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-		config.setAllowedHeaders(List.of("*"));
-		config.setExposedHeaders(List.of("*"));
+//		config.setAllowCredentials(true);
+//		config.setAllowedOrigins(List.of("http://localhost:4200"));
+//		config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+//		config.setAllowedHeaders(List.of("*"));
+//		config.setExposedHeaders(List.of("*"));
+
+		config.setAllowCredentials(false);
+		config.addAllowedOrigin("*");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+		config.setMaxAge(6000L);
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", config);
